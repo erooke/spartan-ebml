@@ -2,7 +2,7 @@ const std = @import("std");
 const builtin = @import("builtin");
 const testing = std.testing;
 
-const VInt = @import("vint.zig");
+pub const VInt = @import("vint.zig");
 
 const Allocator = std.mem.Allocator;
 const File = std.fs.File;

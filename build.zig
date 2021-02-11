@@ -12,11 +12,18 @@ pub fn build(b: *Builder) void {
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&main_tests.step);
 
-    const examples = b.step("examples", "Build examples");
+    const example_step = b.step("examples", "Build examples");
 
-    const example = b.addExecutable("header", "examples/header.zig");
-    example.addPackagePath("sebml", "src/main.zig");
-    example.setBuildMode(mode);
-    example.install();
-    examples.dependOn(&example.step);
+    const examples = [_][]const u8{
+        "header",
+        "mkvtitle",
+    };
+
+    inline for (examples) |name| {
+        const example = b.addExecutable(name, "examples/" ++ name ++ ".zig");
+        example.addPackagePath("sebml", "src/main.zig");
+        example.setBuildMode(mode);
+        example.install();
+        example_step.dependOn(&example.step);
+    }
 }
